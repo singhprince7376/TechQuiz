@@ -6,7 +6,11 @@ const Question = require('./models/Question');
 const path = require('path');
 const app = express();
 
-mongoose.connect(process.env.MONGO_URI).then(() => console.log('MongoDB Connected'));
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 const quizSession = {};
 let userProgress = 1; // to track question progress per level
 

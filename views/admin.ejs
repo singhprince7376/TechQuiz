@@ -1,34 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- 👈 Essential for mobile -->
   <title>Admin Panel</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-dark text-white">
-<div class="container mt-5">
-  <% if (!loggedIn) { %>
-    <h3>Admin Login</h3>
-    <% if (error) { %>
-      <div class="alert alert-danger"><%= error %></div>
+  <div class="container py-5">
+
+    <% if (!loggedIn) { %>
+      <h3 class="text-center mb-4">Admin Login</h3>
+      <% if (error) { %>
+        <div class="alert alert-danger text-center"><%= error %></div>
+      <% } %>
+      <form method="POST" action="/admin" class="mx-auto" style="max-width: 400px;">
+        <input type="password" name="password" class="form-control mb-3" placeholder="Enter Password" required>
+        <div class="d-grid">
+          <button class="btn btn-light">Login</button>
+        </div>
+      </form>
+
+    <% } else { %>
+      <h3 class="mb-4">Question Bank</h3>
+      <form method="POST" action="/admin/add" class="mb-5">
+        <div class="row g-3">
+          <div class="col-md-2">
+            <input type="number" name="level" class="form-control" placeholder="Level" required>
+          </div>
+          <div class="col-md-10">
+            <input type="text" name="question" class="form-control" placeholder="Question" required>
+          </div>
+          <div class="col-12">
+            <textarea name="options" class="form-control" rows="3" placeholder="One option per line" required></textarea>
+          </div>
+          <div class="col-md-6">
+            <input type="number" name="answer" class="form-control" placeholder="Correct option index (0-3)" required>
+          </div>
+          <div class="col-md-6 text-end">
+            <button class="btn btn-success w-100">Add Question</button>
+          </div>
+        </div>
+      </form>
+
+      <hr class="border-light">
+
+      <% questions.forEach(q => { %>
+        <p><strong>Level <%= q.level %></strong>: <%= q.question %></p>
+      <% }) %>
+
     <% } %>
-    <form method="POST" action="/admin">
-      <input type="password" name="password" class="form-control mb-3" placeholder="Enter Password" required>
-      <button class="btn btn-light">Login</button>
-    </form>
-  <% } else { %>
-    <h3>Question Bank</h3>
-    <form method="POST" action="/admin/add">
-      <input type="number" name="level" class="form-control mb-2" placeholder="Level" required>
-      <input type="text" name="question" class="form-control mb-2" placeholder="Question" required>
-      <textarea name="options" class="form-control mb-2" placeholder="One option per line" required></textarea>
-      <input type="number" name="answer" class="form-control mb-2" placeholder="Correct option index (0-3)" required>
-      <button class="btn btn-success">Add Question</button>
-    </form>
-    <hr>
-    <% questions.forEach(q => { %>
-      <p><b>Level <%= q.level %></b>: <%= q.question %></p>
-    <% }) %>
-  <% } %>
-</div>
+
+  </div>
 </body>
 </html>
